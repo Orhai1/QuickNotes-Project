@@ -13,14 +13,15 @@ const Home = () => {
     });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [activeNote, setActiveNote] = useState(null);
+    const [selectedNote, setSelectedNote] = useState(null);
 
     const addNote = (text) => {
         const newNote = {
         id: Date.now(),
         title: noteText.title,
         text: noteText.text,
-        date: new Date()
+        dateCreated: new Date(),
+        dateUpdated: null
         };
 
         setNotes([...notes, newNote]);
@@ -37,14 +38,19 @@ const Home = () => {
         }
     };
 
-    const openModal = (note) => {
-    setActiveNote(note);
+    const openEdit = (note) => {
+    setSelectedNote({ ...note });
     setIsModalOpen(true);
     };
 
-    const closeModal = () => {
-    setIsModalOpen(false);
-    setActiveNote(null);
+    const saveEdit = () => {
+        const updatedNote = {
+            ...selectedNote,
+            dateUpdated: new Date(),
+        };
+        setNotes(notes.map((n) => (n.id === updatedNote.id ? updatedNote : n)));
+        setSelectedNote(null);
+        setIsModalOpen(false);
     };
 
   return (
@@ -66,13 +72,12 @@ const Home = () => {
       
       <div className="notes-list">
         {notes.map((note) => (
-          <Note key={note.id} note={note} onDelete={deleteNote} onClick={() => openModal(note)} />
+          <Note key={note.id} note={note} onDelete={deleteNote} onClick={() => openEdit(note)} />
         ))}
       </div>
       <Modal
         isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Note Modal"
+        onRequestClose={() => setIsModalOpen(false)}
         style={{
           content: {
             maxWidth: "400px",
@@ -85,12 +90,23 @@ const Home = () => {
           }
         }}
       >
-        {activeNote && (
+        {selectedNote && (
           <div>
-            <h3>Note Details</h3>
-            <p><strong>Date:</strong> {new Date(activeNote.date).toLocaleString()}</p>
-            <p><strong>Text:</strong> {activeNote.text}</p>
-            <button onClick={closeModal}>Close</button>
+            <textarea
+              value={selectedNote.title}
+              onChange={(e) => setSelectedNote({ ...selectedNote, title: e.target.value })}
+                className="note-input title-input"
+            />
+            <br />
+            <textarea
+              value={selectedNote.text}
+              onChange={(e) => setSelectedNote({ ...selectedNote, text: e.target.value })}
+                className="note-input text-input"
+            />
+            <div className="modal-buttons">
+              <button onClick={saveEdit}>Save</button>
+              <button onClick={() => setIsModalOpen(false)}>Cancel</button>
+            </div>  
           </div>
         )}
       </Modal>

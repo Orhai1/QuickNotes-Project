@@ -33,3 +33,11 @@
   justify-content: center;
   gap: 12px;
 }
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px; 
+  margin-top: 16px;
+  border-color: blue;
+}

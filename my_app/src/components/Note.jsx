@@ -6,7 +6,12 @@ const Note = ({ note, onDelete, onClick }) => {
     return (
         <div className="note" onClick={onClick}>
             <div className="note-header">
-                <p>{new Date(note.date).toLocaleString()}</p>
+                <div className="date-info">
+                    <p>Created: {new Date(note.dateCreated).toLocaleString()}</p>
+                    {note.dateUpdated && (
+                        <p>Updated: {new Date(note.dateUpdated).toLocaleString()}</p>
+                        )}
+                    </div>
                  <button className="delete-button"
                  // Prevent the click from propagating to the note click handler
                     onClick={(e) => {e.stopPropagation();  onDelete(note.id);}}>

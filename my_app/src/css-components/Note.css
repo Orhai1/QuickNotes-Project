@@ -1,12 +1,21 @@
 .note {
-  font-family: sans-serif;
+   font-family: sans-serif;
   background-color: white;
   border: 1px solid lightgrey;
+  box-sizing: border-box;
+
+  width: 300px;             
+  min-height: 180px;       
   padding: 8px 16px;
   margin: 10px auto;
   border-radius: 4px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   text-align: left;
-  width: fit-content;
+  gap: 4px;
   
   
 }
@@ -16,6 +25,20 @@
   align-items: flex-start;
   gap: 8px;
 }
+.date-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 2px; 
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+}
+.date-info div {
+  margin: 0;
+  padding: 0;
+}
+
 .delete-button {
   color: red;
 }
