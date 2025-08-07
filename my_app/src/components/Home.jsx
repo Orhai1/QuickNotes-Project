@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Note from './note.jsx';
-import '../css-components/Home.css'; // Assuming you have a CSS file for styling
+import '../css-components/Home.css';
 
 const Home = () => {
     const [notes, setNotes] = useState([]);
@@ -17,6 +17,13 @@ const Home = () => {
         setNoteText(""); 
   };
 
+    const deleteNote = (id) => {
+        let confirm = window.confirm("Are you sure you want to delete your note?" );
+        if (confirm) {
+            setNotes(notes.filter(note => note.id !== id));
+        }
+    };
+
   return (
     <div className="home-container">
      <textarea
@@ -30,7 +37,7 @@ const Home = () => {
       
       <div className="notes-list">
         {notes.map((note) => (
-          <Note key={note.id} note={note} />
+          <Note key={note.id} note={note} onDelete={deleteNote} />
         ))}
       </div>
     </div>

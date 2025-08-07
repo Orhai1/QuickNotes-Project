@@ -7,3 +7,15 @@
   background-color: white;
   font-family: sans-serif;
 }
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+.delete-button {
+  color: red;
+  border-radius: 4px;
+  cursor: pointer;
+}
