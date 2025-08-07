@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import Note from './note.jsx';
 import '../css-components/Home.css';
 
+import Modal from "react-modal";
+Modal.setAppElement("#root");
+
 const Home = () => {
     const [notes, setNotes] = useState([]);
     const [noteText, setNoteText] = useState({
         title: "",
         text: ""
     });
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [activeNote, setActiveNote] = useState(null);
 
     const addNote = (text) => {
         const newNote = {
@@ -31,6 +37,16 @@ const Home = () => {
         }
     };
 
+    const openModal = (note) => {
+    setActiveNote(note);
+    setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+    setIsModalOpen(false);
+    setActiveNote(null);
+    };
+
   return (
     <div className="home-container">
     <textarea
@@ -50,9 +66,34 @@ const Home = () => {
       
       <div className="notes-list">
         {notes.map((note) => (
-          <Note key={note.id} note={note} onDelete={deleteNote} />
+          <Note key={note.id} note={note} onDelete={deleteNote} onClick={() => openModal(note)} />
         ))}
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Note Modal"
+        style={{
+          content: {
+            maxWidth: "400px",
+            margin: "auto",
+            padding: "20px",
+            borderRadius: "8px"
+          },
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)"
+          }
+        }}
+      >
+        {activeNote && (
+          <div>
+            <h3>Note Details</h3>
+            <p><strong>Date:</strong> {new Date(activeNote.date).toLocaleString()}</p>
+            <p><strong>Text:</strong> {activeNote.text}</p>
+            <button onClick={closeModal}>Close</button>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };
