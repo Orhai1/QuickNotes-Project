@@ -4,18 +4,25 @@ import '../css-components/Home.css';
 
 const Home = () => {
     const [notes, setNotes] = useState([]);
-    const [noteText, setNoteText] = useState("");
+    const [noteText, setNoteText] = useState({
+        title: "",
+        text: ""
+    });
 
     const addNote = (text) => {
         const newNote = {
         id: Date.now(),
-        text: noteText,
+        title: noteText.title,
+        text: noteText.text,
         date: new Date()
         };
 
         setNotes([...notes, newNote]);
-        setNoteText(""); 
-  };
+        setNoteText({
+            title: "",
+            text: ""
+        });
+    };
 
     const deleteNote = (id) => {
         let confirm = window.confirm("Are you sure you want to delete your note?" );
@@ -26,11 +33,17 @@ const Home = () => {
 
   return (
     <div className="home-container">
-     <textarea
+    <textarea
+        placeholder="Title"
+        value={noteText.title}
+        onChange={(e) => setNoteText({ ...noteText, title: e.target.value })}
+        className="note-input title-input"
+    />
+    <textarea
         placeholder="Your note..."
-        value={noteText}
-        onChange={(e) => setNoteText(e.target.value)}
-        className="note-input"
+        value={noteText.text}
+        onChange={(e) => setNoteText({ ...noteText, text: e.target.value })}
+        className="note-input text-input"
       />
       <br/>
       <button id="add-button" onClick={addNote}>Add Note</button>

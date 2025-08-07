@@ -1,21 +1,29 @@
 .note {
+  font-family: sans-serif;
+  background-color: white;
   border: 1px solid lightgrey;
   padding: 8px 16px;
   margin: 10px auto;
   border-radius: 4px;
+  text-align: left;
   width: fit-content;
-  background-color: white;
-  font-family: sans-serif;
+  
+  
 }
 .note-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
+  align-items: flex-start;
   gap: 8px;
 }
 .delete-button {
   color: red;
-  border-radius: 4px;
-  cursor: pointer;
+}
+.note-content {
+  margin: 2px 0 0 0;
+  padding: 0;
+}
+.h2{
+    font-size: 16px;
+    font-weight: bold;
 }

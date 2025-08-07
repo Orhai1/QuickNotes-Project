@@ -9,8 +9,10 @@ const Note = ({ note, onDelete }) => {
                 <p>{new Date(note.date).toLocaleString()}</p>
                 <button className="delete-button" onClick={() => onDelete(note.id)}>X</button>
             </div>
+            <div className="note-content">
+            <h2>{note.title}</h2>
             <p>{note.text}</p>
-           
+           </div>
         </div>
     );
 };
