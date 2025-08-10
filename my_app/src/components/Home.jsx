@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Note from './note.jsx';
 import '../css-components/Home.css';
+import { CATEGORY_COLORS, CATEGORIES } from "./categories";
 
 import Modal from "react-modal";
 Modal.setAppElement("#root");
@@ -14,12 +15,14 @@ const Home = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedNote, setSelectedNote] = useState(null);
+    const [noteCategory, setNoteCategory] = useState("Personal");
 
     const addNote = (text) => {
         const newNote = {
         id: Date.now(),
         title: noteText.title,
         text: noteText.text,
+        category: noteCategory,
         dateCreated: new Date(),
         dateUpdated: null
         };
@@ -27,7 +30,8 @@ const Home = () => {
         setNotes([...notes, newNote]);
         setNoteText({
             title: "",
-            text: ""
+            text: "",
+            category: "Personal"
         });
     };
 
@@ -67,6 +71,15 @@ const Home = () => {
         onChange={(e) => setNoteText({ ...noteText, text: e.target.value })}
         className="note-input text-input"
       />
+      <select
+        value={noteCategory}
+        onChange={(e) => setNoteCategory(e.target.value)}
+        className="category-select"
+      >
+        {CATEGORIES.map((cat) => (
+          <option key={cat} value={cat}>{cat}</option>
+        ))}
+      </select>
       <br/>
       <button id="add-button" onClick={addNote}>Add Note</button>
       
@@ -103,6 +116,12 @@ const Home = () => {
               onChange={(e) => setSelectedNote({ ...selectedNote, text: e.target.value })}
                 className="note-input text-input"
             />
+            <select
+              value={selectedNote.category}
+              onChange={e => setSelectedNote({ ...selectedNote, category: e.target.value })}
+            >
+              {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+            </select>
             <div className="modal-buttons">
               <button onClick={saveEdit}>Save</button>
               <button onClick={() => setIsModalOpen(false)}>Cancel</button>

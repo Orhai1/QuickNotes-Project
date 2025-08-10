@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import '../css-components/Note.css'
+import '../css-components/Note.css';
+import { CATEGORY_COLORS } from "./categories";
 
 const Note = ({ note, onDelete, onClick }) => {
+    const bg = CATEGORY_COLORS[note.category] || "#fff";
 
     return (
-        <div className="note" onClick={onClick}>
+        <div className="note" onClick={onClick} style={{ backgroundColor: bg }}>
             <div className="note-header">
                 <div className="date-info">
                     <p>Created: {new Date(note.dateCreated).toLocaleString()}</p>
@@ -19,6 +21,7 @@ const Note = ({ note, onDelete, onClick }) => {
                     </button>
             </div>
             <div className="note-content">
+            <p>Category: {note.category}</p>
             <h2>{note.title}</h2>
             <p>{note.text}</p>
            </div>
