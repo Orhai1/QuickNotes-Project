@@ -10,19 +10,19 @@ const Home = () => {
     const [notes, setNotes] = useState([]);
     const [noteText, setNoteText] = useState({
         title: "",
-        text: ""
+        text: "",
+        category: "Personal"
     });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedNote, setSelectedNote] = useState(null);
-    const [noteCategory, setNoteCategory] = useState("Personal");
 
-    const addNote = (text) => {
+    const addNote = () => {
         const newNote = {
         id: Date.now(),
         title: noteText.title,
         text: noteText.text,
-        category: noteCategory,
+        category: noteText.category,
         dateCreated: new Date(),
         dateUpdated: null
         };
@@ -72,8 +72,8 @@ const Home = () => {
         className="note-input text-input"
       />
       <select
-        value={noteCategory}
-        onChange={(e) => setNoteCategory(e.target.value)}
+        value={noteText.category}
+        onChange={(e) => setNoteText({ ...noteText, category: e.target.value })}
         className="category-select"
       >
         {CATEGORIES.map((cat) => (
