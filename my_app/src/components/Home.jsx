@@ -17,6 +17,11 @@ const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedNote, setSelectedNote] = useState(null);
 
+  
+    const [categoryFilter, setCategoryFilter] = useState("All");
+    const [searchInput, setSearchInput] = useState("");   
+    const [searchResults, setSearchResults] = useState("");
+
     const addNote = () => {
         const newNote = {
         id: Date.now(),
@@ -43,8 +48,8 @@ const Home = () => {
     };
 
     const openEdit = (note) => {
-    setSelectedNote({ ...note });
-    setIsModalOpen(true);
+      setSelectedNote({ ...note });
+      setIsModalOpen(true);
     };
 
     const saveEdit = () => {
@@ -57,6 +62,25 @@ const Home = () => {
         setIsModalOpen(false);
     };
 
+    //Search text in note's content
+    const handleSearch = () => setSearchResults(searchInput.trim());
+    const clearSearch  = () => { setSearchInput(""); setSearchResults(""); };
+
+    // Filter notes based on text and category
+    let displayNotes = notes;
+    if (categoryFilter !== "All") {
+      displayNotes = displayNotes.filter((n) => n.category === categoryFilter);
+    }
+    const text = searchResults.trim().toLowerCase();
+    if (text) {
+      displayNotes = displayNotes.filter(
+        (n) =>
+          n.title.toLowerCase().includes(text) ||
+          n.text.toLowerCase().includes(text)
+      );
+    }
+
+
   return (
     <div className="home-container">
     <textarea
@@ -65,28 +89,70 @@ const Home = () => {
         onChange={(e) => setNoteText({ ...noteText, title: e.target.value })}
         className="note-input title-input"
     />
+
     <textarea
         placeholder="Your note..."
         value={noteText.text}
         onChange={(e) => setNoteText({ ...noteText, text: e.target.value })}
         className="note-input text-input"
       />
+
       <select
         value={noteText.category}
         onChange={(e) => setNoteText({ ...noteText, category: e.target.value })}
         className="category-select"
       >
-        {CATEGORIES.map((cat) => (
-          <option key={cat} value={cat}>{cat}</option>
+        {CATEGORIES.map((category) => (
+          <option key={category} value={category}>{category}</option>
         ))}
       </select>
-      <br/>
+
       <button id="add-button" onClick={addNote}>Add Note</button>
       
-      <div className="notes-list">
-        {notes.map((note) => (
-          <Note key={note.id} note={note} onDelete={deleteNote} onClick={() => openEdit(note)} />
+      <div className="category-filters">
+        <button
+          onClick={() => setCategoryFilter("All")}
+        >
+          Show All
+        </button>
+        {CATEGORIES.map((category) => (
+          <button
+            key={category}
+            onClick={() => setCategoryFilter(category)}
+          >
+            {category}
+          </button>
         ))}
+      </div>
+
+      <div className="search-cotainer">
+        <input
+          type="search"
+          placeholder="Search note"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          className="search-input"
+        />
+        <button onClick={handleSearch}>Search</button>
+        {searchResults  && <button onClick={clearSearch}>Clear</button>}
+      </div>
+
+
+      <div className="notes-list">
+        {displayNotes.length === 0 ? (
+          <>
+            {searchResults ? `No results for "${searchResults}"` : "No notes yet."}
+          </>
+        ) : (
+          displayNotes.map((note) => (
+            <Note
+              key={note.id}
+              note={note}
+              onDelete={deleteNote}
+              onClick={() => openEdit(note)}
+            />
+          ))
+        )}
       </div>
       <Modal
         isOpen={isModalOpen}
@@ -120,7 +186,7 @@ const Home = () => {
               value={selectedNote.category}
               onChange={e => setSelectedNote({ ...selectedNote, category: e.target.value })}
             >
-              {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+              {CATEGORIES.map(category => <option key={category} value={category}>{category}</option>)}
             </select>
             <div className="modal-buttons">
               <button onClick={saveEdit}>Save</button>
