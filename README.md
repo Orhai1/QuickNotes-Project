@@ -1,4 +1,3 @@
-# QuickNotes-Project
 # 📝 QuickNotes
 
 QuickNotes is a simple and fast note-taking web application built with **React** .  
